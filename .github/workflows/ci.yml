@@ -1,0 +1,104 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+# No job gets a token it does not need. Each job below asks for read access.
+permissions: {}
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  style:
+    name: Format and lint
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Install clang-format 19
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends clang-format-19
+      - name: Install Rust components
+        run: rustup component add clippy rustfmt
+      - name: Check formatting
+        run: make format-check CLANG_FORMAT=clang-format-19
+      - name: Clippy
+        run: make lint
+
+  contest-file:
+    name: Contest file and equivalence
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Hash, size and encoding of the submitted file
+        run: make contest-check
+      # Same compiler on both sides, so the assembly comparison is meaningful.
+      - name: src/ is the submitted program
+        run: make equivalence ASM=1
+
+  test:
+    name: Test (${{ matrix.compiler }})
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+    # Compilers that have not been verified locally report failures without
+    # blocking the workflow. Promote them by removing `experimental`.
+    continue-on-error: ${{ matrix.experimental }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - compiler: g++-13
+            packages: g++-13
+            werror: "1"
+            experimental: false
+          - compiler: g++-14
+            packages: g++-14
+            werror: "1"
+            experimental: false
+          - compiler: g++-12
+            packages: g++-12
+            werror: "0"
+            experimental: true
+          - compiler: clang++-18
+            packages: clang-18
+            werror: "0"
+            experimental: true
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Install compiler
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends ${{ matrix.packages }}
+      - name: Build and test
+        run: make test CXX=${{ matrix.compiler }} WERROR=${{ matrix.werror }}
+
+  sanitize:
+    name: AddressSanitizer and UBSan
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Run solver tests under sanitizers
+        run: make sanitize
