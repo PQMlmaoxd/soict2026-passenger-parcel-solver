@@ -1,0 +1,19 @@
+cff-version: 1.2.0
+message: If you use this software, please cite it as below.
+title: Passenger and parcel solver for SOICT 2026 Round 2
+type: software
+authors:
+  - name: Team S4T2A8
+license: MIT
+date-released: 2026-11-16
+version: 1.0.0
+abstract: >-
+  A single-threaded C++17 solver for the Integrated Passenger and Parcel
+  Transportation problem. It combines exact route enumeration, adaptive large
+  neighborhood search and slack induction by string removals with route
+  recombination and exact route reassignment.
+keywords:
+  - vehicle routing
+  - pickup and delivery
+  - large neighborhood search
+  - SOICT 2026
