@@ -1,0 +1,8 @@
+# Normalise text to LF in the repository and in checkouts.
+* text=auto eol=lf
+
+# The submitted contest file must keep its exact bytes, so git never rewrites it.
+/contest/*.cpp -text
+/contest/SHA256SUMS -text
+
+*.pdf binary

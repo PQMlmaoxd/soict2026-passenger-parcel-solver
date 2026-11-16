@@ -1,0 +1,14 @@
+# Build output
+/build/
+/tools/target/
+
+
+# Local benchmark runs (recorded results live in benchmarks/results/)
+/results*.csv
+*.in.out
+
+# Editors and OS
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db

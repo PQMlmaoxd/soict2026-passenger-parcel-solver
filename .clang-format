@@ -1,0 +1,21 @@
+# Formatting only. No option here may add, remove or reorder tokens: the CI
+# equivalence check compares the preprocessed token stream with the file that
+# was submitted to the contest (contest/).
+Language: Cpp
+BasedOnStyle: LLVM
+Standard: c++17
+IndentWidth: 2
+ColumnLimit: 100
+PointerAlignment: Left
+SortIncludes: Never
+BreakBeforeBraces: Attach
+AllowShortIfStatementsOnASingleLine: Never
+AllowShortLoopsOnASingleLine: false
+AllowShortBlocksOnASingleLine: Never
+AllowShortFunctionsOnASingleLine: None
+AllowShortCaseLabelsOnASingleLine: false
+AllowShortLambdasOnASingleLine: Inline
+BinPackArguments: true
+BinPackParameters: true
+SeparateDefinitionBlocks: Always
+ReflowComments: true
