@@ -22,7 +22,7 @@ The solver combines exact enumeration for small and mid-sized instances, adaptiv
 
 ## Result
 
-The submitted file finished 6th when the ranking closed at 09:00 ICT on 16/11/2026. It was 3rd on the public CMS scoreboard of 15/11/2026, 21:32 ICT, before other teams made their last submissions.
+The submitted file concluded 6th when the ranking closed at 09:00 ICT on 16/11/2026.
 
 | Scope | Fleet baseline | This solver | Difference |
 |---|---|---|---|
