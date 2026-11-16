@@ -1,0 +1,35 @@
+[package]
+name = "solver-tools"
+version = "1.0.0"
+edition = "2021"
+rust-version = "1.77"
+description = "Checker, instance generator, source tools and benchmark runner for the passenger and parcel solver"
+license = "MIT"
+publish = false
+
+[lib]
+name = "solver_tools"
+path = "src/lib.rs"
+
+[[bin]]
+name = "checker"
+path = "src/bin/checker.rs"
+
+[[bin]]
+name = "gen_instance"
+path = "src/bin/gen_instance.rs"
+
+[[bin]]
+name = "amalgamate"
+path = "src/bin/amalgamate.rs"
+
+[[bin]]
+name = "check_equivalence"
+path = "src/bin/check_equivalence.rs"
+
+[[bin]]
+name = "bench"
+path = "src/bin/bench.rs"
+
+[profile.release]
+opt-level = 3
